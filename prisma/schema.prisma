@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 
+
+model User {
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String
+  active    Boolean  @default(true)
+  avatar    String   @default("")
+  password  String
+  // Warranty  Warranty[]
+
+  ROLES UserRole[]
+}
+
+model Role {
+  id        Int        @id @unique @default(autoincrement())
+  label     String
+  alias     String     @unique
+  isActive  Int        @default(1)
+  deleted   Int        @default(0)
+  userRoles UserRole[] // Mối quan hệ 1-n giữa Role và UserRole
+}
+
+model UserRole {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+  userId Int
+  roleId Int
+
+  // Mối quan hệ 1-1 giữa UserRole và Role
+  @@unique([userId, roleId])
+}
+
+model Product {
+  id             Int           @id @unique @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
+  name           String
+  images         String
+  description    String
+  rate           Float         @default(5)
+  code           String        @default("")
+  seo            String
+  keywords       String
+  productBrandId Int
+  sizeProduct    SizeProduct[]
+  deleted        Int           @default(0)
+  ProductBrand   ProductBrand? @relation(fields: [productBrandId], references: [id])
+}
+
+model SizeProduct {
+  id           Int            @id @unique @default(autoincrement())
+  size         String
+  quantity     Int
+  Product      Product        @relation(fields: [productId], references: [id])
+  productId    Int
+  price        Float
+  orderProduct OrderProduct[]
+}
+
+model ProductBrand {
+  id          Int       @id @unique @default(autoincrement())
+  name        String
+  description String
+  images      String
+  deleted     Int       @default(0)
+  product     Product[]
+}
+
+model Order {
+  id                Int                @id @unique @default(autoincrement())
+  note              String             @default("")
+  status            String
+  code              String             @unique
+  orderProduct      OrderProduct[]
+  orderCustomerInfo OrderCustomerInfo?
+  orderPayment      OrderPayment?
+  orderShipping     OrderShipping?
+}
+
+model OrderCustomerInfo {
+  id      Int    @id @unique @default(autoincrement())
+  name    String
+  phone   String
+  address String
+  email   String
+  orderId Int    @unique
+  order   Order  @relation(fields: [orderId], references: [id])
+}
+
+model OrderProduct {
+  id       Int @id @unique @default(autoincrement())
+  quantity Int
+
+  SizeProduct   SizeProduct @relation(fields: [sizeProductId], references: [id])
+  sizeProductId Int
+  Order         Order       @relation(fields: [orderId], references: [id])
+  orderId       Int
+}
+
+model OrderPayment {
+  id      Int      @id @unique @default(autoincrement())
+  status  String
+  amount  Int
+  method  String
+  note    String?
+  paidAt  DateTime @default(now())
+  orderId Int      @unique
+  order   Order    @relation(fields: [orderId], references: [id])
+}
+
+model OrderShipping {
+  id      Int    @id @unique @default(autoincrement())
+  name    String
+  status  String
+  note    String
+  code    String
+  orderId Int    @unique
+  order   Order  @relation(fields: [orderId], references: [id])
+}
