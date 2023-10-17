@@ -1,5 +1,4 @@
 import { NextApiRequest } from 'next'
-import { STATUS_CODE } from '@/const/app-const'
 
 import { prisma } from '@/services/prisma'
 export default async function findProductPublic(req: NextApiRequest) {
@@ -9,7 +8,16 @@ export default async function findProductPublic(req: NextApiRequest) {
 		const product = await prisma.product.findUnique({
 			where: { id: Number(id) },
 			include: {
-				sizeProduct: true
+				sizeProduct: {
+					orderBy: {
+						size: 'asc'
+					},
+					where: {
+						quantity: {
+							gt: 0
+						}
+					}
+				}
 			}
 		})
 
