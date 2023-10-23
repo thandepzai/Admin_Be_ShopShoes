@@ -27,8 +27,7 @@ interface BodyProps {
 }
 
 export default async function createOrder(req: NextApiRequest) {
-	const { items, customerInfo, paymentInfo } = req.body as BodyProps
-	console.log('🚀 ~ file: create.ts:16 ~ createOrder ~ items:', items)
+	const { items, customerInfo, paymentInfo } = JSON.parse(req.body) as BodyProps
 
 	try {
 		const checkStocking = await Promise.all(
@@ -47,8 +46,8 @@ export default async function createOrder(req: NextApiRequest) {
 		let newCode = ''
 		while (1) {
 			const randomCode = generateRandomString()
-			const checkRandomCode = await prisma.order.findUnique({ where: {code: randomCode}})
-			if (!checkRandomCode){
+			const checkRandomCode = await prisma.order.findUnique({ where: { code: randomCode } })
+			if (!checkRandomCode) {
 				newCode = randomCode
 				break
 			}
@@ -70,6 +69,7 @@ export default async function createOrder(req: NextApiRequest) {
 					}
 				}
 			})
+
 			await Promise.all(
 				items.map(async item => {
 					await prisma.sizeProduct.update({
@@ -78,9 +78,20 @@ export default async function createOrder(req: NextApiRequest) {
 					})
 				})
 			)
+
+			const filteredOrders = await prisma.order.findUnique({
+				where: {
+					id: order.id
+				},
+				include: {
+					orderCustomerInfo: true,
+					orderPayment: true
+				}
+			})
+
 			return {
 				ok: true,
-				data: order,
+				data: filteredOrders,
 				msg: 'Tạo Đơn hàng thành công'
 			}
 		}

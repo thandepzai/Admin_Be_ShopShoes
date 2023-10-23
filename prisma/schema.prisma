@@ -113,14 +113,15 @@ model OrderProduct {
 }
 
 model OrderPayment {
-  id      Int      @id @unique @default(autoincrement())
-  status  String
-  amount  Int
-  method  String
-  note    String?
-  paidAt  DateTime @default(now())
-  orderId Int      @unique
-  order   Order    @relation(fields: [orderId], references: [id])
+  id       Int      @id @unique @default(autoincrement())
+  status   String
+  amount   Int
+  quantity Int
+  method   String
+  note     String?
+  paidAt   DateTime @default(now())
+  orderId  Int      @unique
+  order    Order    @relation(fields: [orderId], references: [id])
 }
 
 model OrderShipping {

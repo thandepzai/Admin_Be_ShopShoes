@@ -18,8 +18,8 @@ const FormDetail = () => {
 			| 'SHIPPING'
 			| 'CANCELED'
 			| 'DONE'
-		const shippingStatus = (shippingSave ? shippingSave : shipping)
-		
+		const shippingStatus = shippingSave ? shippingSave : shipping
+
 		const FormShipping = () => {
 			return (
 				<>
@@ -35,7 +35,7 @@ const FormDetail = () => {
 					>
 						<Form.Item
 							name="name"
-							label={<label className="textTheme">Tên</label>}
+							label={<label className="textTheme">Tên công ty vận chuyển</label>}
 							rules={[
 								{
 									required: true,
@@ -122,18 +122,20 @@ const FormDetail = () => {
 				<Divider className="textTheme">Thông tin đơn hàng mã: {order?.code}</Divider>
 				<Row gutter={[16, 16]}>
 					{status !== 'CANCELED' && status !== 'DONE' ? (
-						<Col xxl={24}>
+						<Col sm={24}>
 							<CoreCard>
-								<p style={{ width: '100%' }} className="text-[20px] p-4 font-bold text-blue-500">
+								<p className="text-[20px] p-4 font-bold text-blue-500 w-full text-center">
 									Thay đổi trạng thái đơn hàng
 								</p>
-								<RenderButton />
+								<div className="flex justify-center">
+									<RenderButton />
+								</div>
 							</CoreCard>
 						</Col>
 					) : (
 						<></>
 					)}
-					<Col xxl={24}>
+					<Col sm={24}>
 						<CoreCard>
 							<p
 								style={{ width: '100%' }}
