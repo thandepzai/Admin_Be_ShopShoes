@@ -18,6 +18,7 @@ const FormDetail = () => {
 			| 'SHIPPING'
 			| 'CANCELED'
 			| 'DONE'
+			| 'REFUND'
 		const shippingStatus = shippingSave ? shippingSave : shipping
 
 		const FormShipping = () => {
@@ -71,7 +72,7 @@ const FormDetail = () => {
 							{buttonStatus[status].map(item => {
 								return (
 									<Button
-										className="ml-4 mb-4"
+										className="ml-4 mb-4 hover:scale-105"
 										type="primary"
 										color="success"
 										loading={loadingSaveOrder}
@@ -93,7 +94,7 @@ const FormDetail = () => {
 		const RenderShipping = useCallback(() => {
 			if (shippingStatus !== null) {
 				return (
-					<Col xxl={8}>
+					<Col xs={24} xxl={8}>
 						<CoreCard>
 							<p style={{ width: '100%' }} className="text-[18px] py-2 font-bold text-blue-500">
 								Thông tin giao hàng
@@ -146,7 +147,7 @@ const FormDetail = () => {
 							<Table order={orderForm?.listProduct} />
 						</CoreCard>
 					</Col>
-					<Col xxl={8}>
+					<Col xs={24} lg={12} xxl={8}>
 						<CoreCard>
 							<p style={{ width: '100%' }} className="text-[18px] py-2 font-bold text-blue-500">
 								Thông tin đơn hàng
@@ -166,9 +167,14 @@ const FormDetail = () => {
 							<p style={{ width: '100%' }} className="text-[14px] py-2 font-600 text-500">
 								Phương thức: {payment?.method}
 							</p>
+							{order.note && (
+								<p style={{ width: '100%' }} className="text-[14px] py-2 font-600 text-500">
+									Note: {order?.note}
+								</p>
+							)}
 						</CoreCard>
 					</Col>
-					<Col xxl={8}>
+					<Col xs={24} lg={12} xxl={8}>
 						<CoreCard>
 							<p style={{ width: '100%' }} className="text-[18px] py-2 font-bold text-blue-500">
 								Thông tin khách hàng

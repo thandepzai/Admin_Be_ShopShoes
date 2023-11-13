@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { List, Button, Upload, message, FormInstance, Form, Row, Col, Select, Spin, Image } from 'antd'
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import { removeSpecial } from '@/ultis/dataConvert'
+import ImgCrop from 'antd-img-crop'
 
 import { supabase } from '@/services/supabase'
 
@@ -21,7 +22,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	const [fileList, setFileList] = useState<string[]>(() => {
 		const init: string[] = initValue?.map(item => {
 			const splitStr = item.split(
-				'https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/'
+				'https://ikunmdgrxuoyltqjiolb.supabase.co/storage/v1/object/public/file/public/'
 			)
 			return splitStr[1]
 		})
@@ -32,7 +33,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 		let arr: undefined | string[] = undefined
 		if (fileList.length > 0) {
 			arr = fileList.map(
-				item => `https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/${item}`
+				item => `https://ikunmdgrxuoyltqjiolb.supabase.co/storage/v1/object/public/file/public/${item}`
 			)
 		}
 		form.setFieldValue(formName, arr)
@@ -80,7 +81,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 				<Image
 					loading="lazy"
 					height={160}
-					src={`https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/${file}`}
+					src={`https://ikunmdgrxuoyltqjiolb.supabase.co/storage/v1/object/public/file/public/${file}`}
 					alt="vui ve thoi"
 				/>
 				<Button
@@ -114,11 +115,13 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 			</div>
 			<div className="flex flex-col">
 				{fileList.length < maxItem ? (
-					<Upload beforeUpload={handleUpload} showUploadList={false}>
-						<Button htmlType="button" className="w-[200px]" type="primary" icon={<UploadOutlined />}>
-							Tải lên
-						</Button>
-					</Upload>
+					<ImgCrop>
+						<Upload beforeUpload={handleUpload} showUploadList={false}>
+							<Button htmlType="button" className="w-[200px]" type="primary" icon={<UploadOutlined />}>
+								Tải lên
+							</Button>
+						</Upload>
+					</ImgCrop>
 				) : null}
 				<Form.Item
 					name={formName}

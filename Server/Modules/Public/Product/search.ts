@@ -15,6 +15,9 @@ export default async function searchProductPublic(req: NextApiRequest) {
 			include: {
 				sizeProduct: true
 			},
+			orderBy: {
+				createdAt: 'desc'
+			},
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: Number(pageSize)
 		})
@@ -41,7 +44,7 @@ export default async function searchProductPublic(req: NextApiRequest) {
 			msg: 'OK'
 		}
 	} catch (error) {
-		console.log('🚀 ~ file: search.ts:61 ~ createProduct ~ error:', error)
+		console.log('🚀 ~ file: search.ts:44 ~ searchProductPublic ~ error:', error)
 		return null
 	}
 }

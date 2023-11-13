@@ -1,12 +1,12 @@
 'use client'
-import React, { ReactNode, useEffect } from 'react'
-import { STATUS_CODE, STORAGE_KEY } from '../../../const/app-const'
-import { useRouter } from 'next/router'
+import React, { ReactNode, useEffect, useState } from 'react'
+import { STORAGE_KEY } from '../../../const/app-const'
 import { useUser } from '@/hooks'
 import { AUTH_ROUTER } from '@/@App/Pages/Auth/configs/router'
 import { authService } from '@/@App/Pages/Auth/services/authServices'
 import { useRequest } from 'ahooks'
 import { Spin } from 'antd'
+import { useRouter } from 'next/router'
 interface Props {
 	children: ReactNode
 }
@@ -23,7 +23,7 @@ export const useUserInfo = () => {
 				if (res?.data?.roles?.includes('admin')) {
 					return router.push('/admin/dashboard')
 				}
-				return router.push('/dashboard')
+				return router.push('/')
 			}
 		},
 		onError: () => {
@@ -37,9 +37,17 @@ export const useUserInfo = () => {
 
 const AuthProvider: React.FC<Props> = ({ children }) => {
 	const router = useRouter()
-
 	const { token } = useUser()
 	const { authLoading, fetchAuth } = useUserInfo()
+	const [offHome, setOffHome] = useState(true)
+	const currentPath = router.pathname
+
+	useEffect(() => {
+		const localToken = typeof window !== 'undefined' ? window.sessionStorage.getItem(STORAGE_KEY.LOCAL_USER) : null
+		if ((currentPath !== '/' && offHome) || localToken) {
+			setOffHome(false)
+		}
+	}, [currentPath])
 
 	useEffect(() => {
 		const localToken = typeof window !== 'undefined' ? window.sessionStorage.getItem(STORAGE_KEY.LOCAL_USER) : null
@@ -52,7 +60,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 
 	return (
 		<>
-			{authLoading ? (
+			{authLoading || offHome ? (
 				<div className="items-center justify-center w-[100vw] h-[100vh] flex">
 					<Spin />
 				</div>

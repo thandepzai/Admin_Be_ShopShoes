@@ -1,24 +1,28 @@
 import { NextApiRequest } from 'next'
-import { STATUS_CODE } from '@/const/app-const'
-
 import { prisma } from '@/services/prisma'
+
 export default async function searchOrder(req: NextApiRequest) {
-	const { label, page = 1, pageSize = 10 } = req.query
+	const { label, page = 1, pageSize = 10, filterStatus } = req.query
 	const lowercaseLabel = label?.toString()?.toLowerCase() ?? ''
-	console.log("🚀 ~ file: search.ts:8 ~ searchRole ~ lowercaseLabel:", lowercaseLabel)
+	console.log('🚀 ~ file: search.ts:8 ~ searchRole ~ lowercaseLabel:', lowercaseLabel)
+
+	const status = filterStatus && filterStatus.toString().length ? filterStatus.toString() : {}
 
 	try {
 		const filteredOrders = await prisma.order.findMany({
+			where: {
+				status
+			},
 			include: {
 				orderCustomerInfo: {
 					select: {
 						name: true,
-						phone: true,
-					},
+						phone: true
+					}
 				}
 			},
 			orderBy: {
-				id: 'asc',
+				id: 'asc'
 			},
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: Number(pageSize)
@@ -40,7 +44,7 @@ export default async function searchOrder(req: NextApiRequest) {
 			msg: 'OK'
 		}
 	} catch (error) {
-		console.log("🚀 ~ file: search.ts:47 ~ searchOrder ~ error:", error)
+		console.log('🚀 ~ file: search.ts:47 ~ searchOrder ~ error:', error)
 		return null
 	}
 }

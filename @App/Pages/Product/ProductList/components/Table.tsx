@@ -1,5 +1,5 @@
 import { useAntdTable } from 'ahooks'
-import { Button, Image, Table, Tooltip } from 'antd'
+import { Button, Form, Image, Input, Table, Tooltip } from 'antd'
 import { useTable } from '../hooks/useTable'
 import { useEffect } from 'react'
 import { useImageModal } from '../hooks/useImageModal'
@@ -11,12 +11,14 @@ import { useDescriptionModal } from '../hooks/useDescriptionModal'
 
 export default () => {
 	const router = useRouter()
+	const [form] = Form.useForm()
+
 	const { getTableData } = useTable()
-	const { tableProps, run } = useAntdTable(getTableData)
+	const { tableProps, search } = useAntdTable(getTableData, { form })
 	const { handleOpenImageModal, renderImagesModal } = useImageModal()
 	const { handleOpenDescriptionModal, renderDescriptionModal } = useDescriptionModal()
 
-	// const { type, changeType, submit, reset } = search
+	const { submit } = search
 
 	const columns = [
 		{
@@ -52,14 +54,13 @@ export default () => {
 			)
 		},
 		{
+			title: 'Code',
+			dataIndex: 'code'
+		},
+		{
 			title: 'Ngày tạo',
 			dataIndex: 'createdAt',
 			render: (data: any) => <>{moment(data).format('DD/MM/YYYY')}</>
-		},
-		{
-			title: 'Ngày cập nhật',
-			dataIndex: 'updatedAt',
-			render: (data: any) => <>{moment(data).format('DD/MM/YYYY - hh:mm')}</>
 		},
 		{
 			title: 'Hành động',
@@ -83,10 +84,16 @@ export default () => {
 		}
 	]
 
-	const renderAllImage = () => {}
-
 	return (
 		<>
+			<Form form={form} className="flex w-1/2">
+				<Form.Item name="name" className="mr-4 w-full">
+					<Input placeholder="Nhập tên sản phẩm" />
+				</Form.Item>
+				<Button type="primary" onClick={submit}>
+					Tìm Kiếm
+				</Button>
+			</Form>
 			<Table columns={columns} rowKey="id" {...tableProps} />
 			{renderImagesModal()}
 			{renderDescriptionModal()}

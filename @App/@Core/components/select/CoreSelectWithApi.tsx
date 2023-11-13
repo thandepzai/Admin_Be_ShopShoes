@@ -12,6 +12,7 @@ interface Props {
 	valuePath?: string
 	labelPath?: string
 	customRender?: (data: any[]) => void
+	defaultValue?: string
 }
 
 export const CoreSelectWithApi: React.FC<Props> = ({
@@ -47,8 +48,8 @@ export const CoreSelectWithApi: React.FC<Props> = ({
 			className="min-w-[240px]"
 			{...restProps}
 		>
-			{data?.data?.dataTable?.map((option: any) => (
-				<Option key={option.value} value={option[valuePath]}>
+			{data?.data?.dataTable?.map((option: any, key: number) => (
+				<Option key={key} value={option[valuePath]}>
 					{customRender ? customRender(option) : option[labelPath]}
 				</Option>
 			))}

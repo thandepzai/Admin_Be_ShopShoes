@@ -33,8 +33,6 @@ export default async function searchOrders(req: NextApiRequest) {
 					id: 'asc'
 				}
 			})
-			console.log('🚀 ~ file: search.ts:21 ~ searchRole ~ filteredOrders:', filteredOrders)
-
 			return {
 				ok: true,
 				data: {

@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import { CoreCard, FileUpload } from '@/@App/@Core/components'
 import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
 import { useFormDetail } from '../hooks/useFormDetail'
+import { useDeleteBrandModal } from '../hooks/useDeleteBrandModal' 
 const InputRichText = dynamic(() => import('@/@App/@Core/components/input/InputRichText'), {
 	ssr: false,
 	loading: () => (
@@ -19,6 +20,7 @@ const FormDetail = () => {
 
 	const initImages = (productBrand?.images ? JSON.parse(productBrand?.images) : []) as string[]
 	const { loadingSaveProductBrand, saveProductBrand } = useFormDetail(id)
+	const { handleChangeDeleteBrandModal, renderDeleteBrandModal } = useDeleteBrandModal()
 
 	return (
 		<div>
@@ -80,12 +82,25 @@ const FormDetail = () => {
 						</div>
 					</CoreCard>
 					<Form.Item wrapperCol={{ span: 24 }}>
-						<Button loading={loadingSaveProductBrand} block type="primary" htmlType="submit">
-							{productBrand?.id ? 'Sửa hãng sản phẩm' : 'Thêm hãng sản phẩm'}
-						</Button>
+
+						{productBrand?.id ? (
+							<div className='flex justify-between gap-5'>
+								<Button loading={loadingSaveProductBrand} block type="primary" htmlType="submit">
+									Sửa hãng sản phẩm
+								</Button>
+								<Button  onClick={handleChangeDeleteBrandModal} block type="primary" danger>
+									Xóa hãng sản phẩm
+								</Button>
+							</div>
+						) : (
+							<Button loading={loadingSaveProductBrand} block type="primary" htmlType="submit">
+								Tạo hãng sản phẩm
+							</Button>
+						)}
 					</Form.Item>
 				</Form>
 			)}
+			{renderDeleteBrandModal()}
 		</div>
 	)
 }

@@ -1,5 +1,3 @@
-function Home() {
-  return <>1</>;
-}
+import Home from '@/@App/Pages/Home'
 
-export default Home;
+export default Home

@@ -7,10 +7,16 @@ import { ORDER_ROUTER } from '../../configs/router'
 
 export default () => {
 	const router = useRouter()
-	const { getTableData } = useTable()
-	const { tableProps, run } = useAntdTable(getTableData)
-
-	// const { type, changeType, submit, reset } = search
+	const { getTableData, setFilterStatus } = useTable()
+	let { tableProps, search } = useAntdTable(getTableData)
+	const { submit } = search
+	tableProps = {
+		...tableProps,
+		onChange: (pagination, filters) => {
+			setFilterStatus(filters.status)
+			submit()
+		}
+	}
 
 	const columns = [
 		{
@@ -30,12 +36,17 @@ export default () => {
 			dataIndex: ['orderCustomerInfo', 'phone']
 		},
 		{
-			title: 'Note',
-			dataIndex: 'note'
-		},
-		{
 			title: 'Trạng thái',
-			dataIndex: 'status'
+			dataIndex: 'status',
+			filters: [
+				{ text: 'Chờ Duyệt', value: 'WAITING' },
+				{ text: 'Hoàn Tiền', value: 'REFUND' },
+				{ text: 'Chấp nhận', value: 'CONFIRM' },
+				{ text: 'Đang Giao', value: 'SHIPPING' },
+				{ text: 'Đã Hủy', value: 'CANCELED' },
+				{ text: 'Hoàn Thành', value: 'DONE' }
+			],
+			filterMultiple: false
 		},
 		{
 			title: 'Hành động',
@@ -47,7 +58,7 @@ export default () => {
 						<Tooltip placement="topLeft" title={'Chỉnh sửa'}>
 							<Button
 								style={{ width: '25%' }}
-								className='flex justify-center items-center'
+								className="flex justify-center items-center"
 								type="primary"
 								color="success"
 								onClick={() => router.push(ORDER_ROUTER.DETAIL(data?.id))}

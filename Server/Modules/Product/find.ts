@@ -7,7 +7,7 @@ export default async function findProduct(req: NextApiRequest) {
 	const id = req.query.id as string
 	try {
 		const product = await prisma.product.findUnique({
-			where: { id: Number(id) },
+			where: { id: Number(id), deleted: 0 },
 			include: {
 				sizeProduct: true,
 			}

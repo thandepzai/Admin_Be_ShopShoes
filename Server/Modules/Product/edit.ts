@@ -14,8 +14,11 @@ interface BodyProps {
 	sizeProduct: SizeProduct[]
 }
 export default async function editProduct(req: NextApiRequest) {
-	const { id, name, images, description, productBrandId, code, seo, keywords, sizeProduct } = JSON.parse(req.body) as BodyProps
-	
+	const { id, name, images, description, productBrandId, code, seo, keywords, sizeProduct } = JSON.parse(
+		req.body
+	) as BodyProps
+	const minPrice = Math.min(...sizeProduct.map(s => s.price))
+
 	try {
 		await prisma.product.update({
 			where: { id: Number(id) },
@@ -24,6 +27,7 @@ export default async function editProduct(req: NextApiRequest) {
 				code,
 				seo,
 				keywords,
+				minPrice,
 				productBrandId: Number(productBrandId),
 				images: JSON.stringify(images),
 				description

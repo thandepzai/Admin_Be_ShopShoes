@@ -1,6 +1,5 @@
 import { useRequest } from 'ahooks'
 import { authService } from '../../services/authServices'
-import { STATUS_CODE } from '@/const/app-const'
 import { message } from 'antd'
 import { internalErrorMsg } from '@/ultis/msg'
 import { useUser } from '@/hooks'
@@ -15,8 +14,13 @@ export const useLogin = () => {
 			message.success(data?.msg)
 			fetchAuth()
 		},
-		onError: a => {
-			console.log('🚀 ~ file: useLogin.ts:19 ~ useLogin ~ err:', a)
+		onError: (err: any) => {
+			console.log('🚀 ~ file: useLogin.ts:19 ~ useLogin ~ err:', err)
+			if (err.error.data.msg) {
+				message.error(err.error.data.msg)
+			} else {
+				internalErrorMsg()
+			}
 		}
 	})
 

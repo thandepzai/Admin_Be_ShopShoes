@@ -69,13 +69,24 @@ export default async function createOrder(req: NextApiRequest) {
 					}
 				}
 			})
-
+			const codeProduct: (string | undefined)[] = []
 			await Promise.all(
 				items.map(async item => {
 					await prisma.sizeProduct.update({
 						where: { id: item.sizeProductId },
 						data: { quantity: { decrement: item.quantity } }
 					})
+
+					const product = await prisma.sizeProduct.findUnique({
+						where: { id: item.sizeProductId },
+						select: {
+							Product: true
+						}
+					})
+
+					if (codeProduct.indexOf(product?.Product.code) === -1) {
+						codeProduct.push(product?.Product.code)
+					}
 				})
 			)
 
@@ -89,9 +100,13 @@ export default async function createOrder(req: NextApiRequest) {
 				}
 			})
 
+			const dataResponse = {
+				...filteredOrders,
+				codeProduct
+			}
 			return {
 				ok: true,
-				data: filteredOrders,
+				data: dataResponse,
 				msg: 'Tạo Đơn hàng thành công'
 			}
 		}

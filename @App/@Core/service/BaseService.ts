@@ -111,7 +111,7 @@ export class BaseService {
 					headers: {
 						'x-access-token': this.getToken(),
 						...config
-					},
+					}
 				})
 				const result = await response.json()
 				if (!result.ok) {
@@ -121,10 +121,11 @@ export class BaseService {
 			} catch (error) {
 				throw { message: 'Network error', error }
 			}
-		},
+		}
 	}
 
 	search = async ({ params, header }: searchProps) => {
+		console.log('🚀 ~ file: BaseService.ts:128 ~ BaseService ~ search= ~ params:', params)
 		const convertParams = queryString.stringify(params ?? { page: 1, pageSize: 10 })
 		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}/search?${convertParams}`
 		return this.request.get(endpoint, header)
@@ -141,7 +142,14 @@ export class BaseService {
 	}
 
 	save = async (data: any, config?: any) => {
-		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}`
+		let endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}`
+
+		const searchTerm = 'http://127.0.0.1:5000/'
+		if (this.BASE_ENDPOINT && this.BASE_ENDPOINT.includes(searchTerm)) {
+			endpoint = this.BASE_ENDPOINT
+			return this.request.post(endpoint, { token: this.getToken() }, { 'Content-Type': 'application/json' })
+		}
+
 		if (data?.id) {
 			return this.request.put(endpoint, data, config)
 		}

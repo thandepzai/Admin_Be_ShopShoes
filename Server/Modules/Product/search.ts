@@ -12,7 +12,8 @@ export default async function searchProduct(req: NextApiRequest) {
 				name: {
 					contains: lowercaseName,
 					mode: 'insensitive'
-				}
+				},
+				deleted: 0
 			},
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: Number(pageSize)

@@ -1,7 +1,6 @@
 import { useRequest } from 'ahooks'
 import { authService } from '../../services/authServices'
 import { useRouter } from 'next/router'
-import { STATUS_CODE } from '@/const/app-const'
 import { message } from 'antd'
 import { AUTH_ROUTER } from '../../configs/router'
 import { internalErrorMsg } from '@/ultis/msg'
@@ -11,16 +10,17 @@ export const useRegister = () => {
 	const { loading, run } = useRequest(authService.register, {
 		manual: true,
 		onSuccess: data => {
-			if (data?.code === STATUS_CODE.CREATED) {
-				message.success(data?.msg)
-				router.push(AUTH_ROUTER.LOGIN)
-			} else {
-				message.error(data?.msg)
-			}
+			console.log('🚀 ~ file: useRegister.ts:14 ~ useRegister ~ data:', data)
+			message.success(data?.msg)
+			router.push(AUTH_ROUTER.LOGIN)
 		},
-		onError: err => {
-			console.log(err)
-			internalErrorMsg()
+		onError: (err: any) => {
+			console.log('🚀 ~ file: useRegister.ts:18 ~ useRegister ~ err:', err)
+			if (err.error.data.msg) {
+				message.error(err.error.data.msg)
+			} else {
+				internalErrorMsg()
+			}
 		}
 	})
 

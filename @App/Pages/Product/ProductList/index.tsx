@@ -1,4 +1,4 @@
-import { Button } from 'antd'
+import { Button, Input } from 'antd'
 import ProductListProvider from './ProductListProvider'
 import Table from './components/Table'
 import { useRouter } from 'next/router'
@@ -8,12 +8,11 @@ const ProductList = () => {
 	const router = useRouter()
 	return (
 		<ProductListProvider>
-			<div className="flex justify-between my-4">
+			<div className="my-4">
 				<Button type="primary" onClick={() => router.push(PRODUCT_ROUTER.NEW)}>
 					Tạo mới
 				</Button>
 			</div>
-
 			<Table />
 		</ProductListProvider>
 	)

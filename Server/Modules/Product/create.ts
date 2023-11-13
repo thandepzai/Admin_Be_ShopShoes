@@ -19,6 +19,7 @@ export default async function createProduct(req: NextApiRequest) {
 	const { name, code, productBrandId, keywords, images, description, sizeProduct, seo } = JSON.parse(
 		req.body
 	) as BodyProps
+	const minPrice = Math.min(...sizeProduct.map(s => s.price))
 	try {
 		await prisma.product.create({
 			data: {
@@ -29,6 +30,7 @@ export default async function createProduct(req: NextApiRequest) {
 				productBrandId: Number(productBrandId),
 				images: JSON.stringify(images),
 				description,
+				minPrice,
 				sizeProduct: {
 					create: sizeProduct.map(item => item)
 				}

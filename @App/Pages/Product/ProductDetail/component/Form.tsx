@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
 import { useFormDetail } from '../hooks/useFormDetail'
 import { productBrandServices } from '../../services/productServices'
+import { useDeleteProductModal } from '../hooks/useDeleteProductModal'
 const InputRichText = dynamic(() => import('@/@App/@Core/components/input/InputRichText'), {
 	ssr: false,
 	loading: () => (
@@ -26,7 +27,7 @@ const FormDetail = () => {
 
 	const { getFieldError, getFieldsValue } = form
 	const { loadingSaveProduct, saveProduct } = useFormDetail(id)
-
+	const { handleChangeDeleteProductModal, renderDeleteProductModal } = useDeleteProductModal()
 	return (
 		<div>
 			<Divider className="textTheme"> {id === 'new' ? 'Thêm sản phẩm' : product?.name}</Divider>
@@ -49,7 +50,7 @@ const FormDetail = () => {
 						seo: product?.seo,
 						code: product?.code,
 						keywords: product?.keywords,
-						idProductBrand: product?.idProductBrand
+						productBrandId: product?.productBrandId
 					}}
 				>
 					<CoreCard className="my-5">
@@ -68,7 +69,13 @@ const FormDetail = () => {
 									Thông tin cơ bản
 								</p>
 								<div className="p-4 bg-gray-100">
-									<Form.Item className="hidden" name="id"></Form.Item>
+									{id !== 'new' && (
+										<Form.Item
+											className="hidden"
+											name="id"
+											rules={[{ required: true }]}
+										></Form.Item>
+									)}
 									<Form.Item
 										name="productBrandId"
 										label={<label className="textTheme">Hãng sản phẩm</label>}
@@ -259,12 +266,30 @@ const FormDetail = () => {
 					</Row>
 
 					<Form.Item wrapperCol={{ span: 24 }}>
-						<Button loading={loadingSaveProduct} block type="primary" htmlType="submit">
-							{product?.id ? 'Sửa sản phẩm' : 'Tạo sản phẩm'}
-						</Button>
+						{product?.id ? (
+							<div className="flex justify-between gap-5">
+								<Button loading={loadingSaveProduct} block type="primary" htmlType="submit">
+									Sửa sản phẩm
+								</Button>
+								<Button
+									loading={loadingSaveProduct}
+									onClick={handleChangeDeleteProductModal}
+									block
+									type="primary"
+									danger
+								>
+									Xóa sản phẩm
+								</Button>
+							</div>
+						) : (
+							<Button loading={loadingSaveProduct} block type="primary" htmlType="submit">
+								Tạo sản phẩm
+							</Button>
+						)}
 					</Form.Item>
 				</Form>
 			)}
+			{renderDeleteProductModal()}
 		</div>
 	)
 }

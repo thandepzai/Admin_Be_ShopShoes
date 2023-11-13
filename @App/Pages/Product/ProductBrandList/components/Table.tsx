@@ -33,7 +33,12 @@ export default () => {
 		},
 		{
 			title: 'Giới Thiệu',
-			dataIndex: 'description'
+			dataIndex: 'description',
+			render: (description : string) => {
+				return (
+					<div className="flex flex-col bg-gray" dangerouslySetInnerHTML={{ __html: description }}></div>
+				)
+			}
 		},
 		{
 			title: 'Hành động',

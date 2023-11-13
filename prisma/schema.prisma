@@ -53,9 +53,11 @@ model Product {
   images         String
   description    String
   rate           Float         @default(5)
-  code           String        @default("")
+  code           String        @unique
   seo            String
   keywords       String
+  view           Int           @default(0)
+  minPrice       Float
   productBrandId Int
   sizeProduct    SizeProduct[]
   deleted        Int           @default(0)
@@ -86,6 +88,8 @@ model Order {
   note              String             @default("")
   status            String
   code              String             @unique
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now())
   orderProduct      OrderProduct[]
   orderCustomerInfo OrderCustomerInfo?
   orderPayment      OrderPayment?
@@ -103,9 +107,8 @@ model OrderCustomerInfo {
 }
 
 model OrderProduct {
-  id       Int @id @unique @default(autoincrement())
-  quantity Int
-
+  id            Int         @id @unique @default(autoincrement())
+  quantity      Int
   SizeProduct   SizeProduct @relation(fields: [sizeProductId], references: [id])
   sizeProductId Int
   Order         Order       @relation(fields: [orderId], references: [id])
@@ -113,15 +116,15 @@ model OrderProduct {
 }
 
 model OrderPayment {
-  id       Int      @id @unique @default(autoincrement())
-  status   String
-  amount   Int
-  quantity Int
-  method   String
-  note     String?
-  paidAt   DateTime @default(now())
-  orderId  Int      @unique
-  order    Order    @relation(fields: [orderId], references: [id])
+  id        Int      @id @unique @default(autoincrement())
+  status    String
+  amount    Int
+  quantity  Int
+  method    String
+  note      String?
+  createdAt DateTime @default(now())
+  orderId   Int      @unique
+  order     Order    @relation(fields: [orderId], references: [id])
 }
 
 model OrderShipping {
@@ -132,4 +135,15 @@ model OrderShipping {
   code    String
   orderId Int    @unique
   order   Order  @relation(fields: [orderId], references: [id])
+}
+
+model SessionList {
+  id              Int  @id @unique @default(autoincrement())
+  listCodeProduct Json
+}
+
+model WordVector {
+  id          Int    @id @unique @default(autoincrement())
+  codeProduct String
+  vector      String
 }

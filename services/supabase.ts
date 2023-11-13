@@ -2,6 +2,6 @@ import { SUPABASE_CONFIG } from '@/const/app-const'
 import { createClient } from '@supabase/supabase-js'
 
 export const supabase = createClient(
-	'https://esvelufzuzhhmsqjiior.supabase.co',
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzdmVsdWZ6dXpoaG1zcWppaW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODYzNzE4MjEsImV4cCI6MjAwMTk0NzgyMX0.IA_ZL0eUeooq2RUZ1Lix8YEa8dTNv7jpSL-a30oKygQ'
+	'https://ikunmdgrxuoyltqjiolb.supabase.co',
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlrdW5tZGdyeHVveWx0cWppb2xiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5OTQyNjUwMiwiZXhwIjoyMDE1MDAyNTAyfQ.1pYM_jcSQkiar4d-v1CZRUVdfdbRGMQu7dH6dr-0ELQ'
 )
