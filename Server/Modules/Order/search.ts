@@ -29,7 +29,7 @@ export default async function searchOrder(req: NextApiRequest) {
 		})
 		console.log('🚀 ~ file: search.ts:21 ~ searchRole ~ filteredOrders:', filteredOrders)
 
-		const totalCount = await prisma.order.count({})
+		const totalCount = await prisma.order.count({ where: { status } })
 
 		return {
 			ok: true,

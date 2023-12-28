@@ -15,15 +15,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return res.status(STATUS_CODE.INVALID_METHOD).json({ ok: false, data: null, msg: 'Method not allow' })
 	}
 
-	const listStatus = {
-		CONFIRM: confirmOrder(req),
-		CANCELED: canceledOrder(req),
-		SHIPPING: shippingOrder(req),
-		DONE: doneOrder(req)
-	}
 	const { status } = JSON.parse(req.body) as BodyRequest
 
-	response = await listStatus[status]
+	if (status === 'CANCELED') {
+		response = await canceledOrder(req)
+	} else if (status === 'CONFIRM') {
+		response = await confirmOrder(req)
+	} else if (status === 'DONE') {
+		response = await doneOrder(req)
+	} else {
+		response = await shippingOrder(req)
+	}
 
 	if (response) {
 		return res.status(STATUS_CODE.OK).json({ ok: response?.ok ?? false, data: response.data, msg: response.msg })

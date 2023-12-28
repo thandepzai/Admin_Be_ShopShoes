@@ -7,17 +7,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export default function Login(): JSX.Element {
-	// async function SendEmail(email: string) {
-	//   setIsLoading(true);
-	//   const result = await SendResetMailApi(email);
-	//   if (result.code === STATUS_CODE.OK) {
-	//     message.info("Đã gửi mail, vui lòng kiểm tra cả spam và hòm thư rác");
-	//   } else {
-	//     message.error("Đã có lỗi xảy ra");
-	//   }
-	//   setIsLoading(false);
-	// }
-
 	return (
 		<Row align="middle" justify="center" style={{ height: '90vh' }}>
 			<Col

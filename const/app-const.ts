@@ -28,11 +28,17 @@ export const STORAGE_KEY = {
 export const API = `${process.env.be_url}/api`
 
 export const SUPABASE_CONFIG = {
-	URL: process.env.SUPABASE_URL as string,
-	PUBKEY: process.env.SUPABASE_KEY as string
+	URL: process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+	PUBKEY: process.env.NEXT_PUBLIC_SUPABASE_KEY as string,
+	IMAGE: process.env.NEXT_PUBLIC_SUPABASE_IMAGE as string
 }
 
-export const TOKEN_KEY = process.env.TOKEN_KEY as string
+export const BACKEND_SEVER = process.env.NEXT_PUBLIC_BACKEND_SEVER as string
+
+export const TRAIN_PRODUCT = process.env.NEXT_PUBLIC_TRAIN_PRODUCT_API as string
+export const TRAIN_PRODUCT_CHECK = process.env.NEXT_PUBLIC_TRAIN_PRODUCT_CHECK as string
+
+export const TOKEN_KEY = process.env.NEXT_PUBLIC_TOKEN_KEY as string
 
 export enum STATUS_CODE {
 	INVALID_METHOD = 405,

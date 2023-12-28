@@ -1,5 +1,6 @@
+'use client'
 import { useAntdTable } from 'ahooks'
-import { Button, Table, Tooltip } from 'antd'
+import { Button, Form, Select, Table, Tooltip } from 'antd'
 import { useTable } from '../hooks/useTable'
 import { EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
@@ -7,16 +8,10 @@ import { ORDER_ROUTER } from '../../configs/router'
 
 export default () => {
 	const router = useRouter()
-	const { getTableData, setFilterStatus } = useTable()
-	let { tableProps, search } = useAntdTable(getTableData)
+	const [form] = Form.useForm()
+	const { getTableData } = useTable()
+	const { tableProps, search } = useAntdTable(getTableData, { form })
 	const { submit } = search
-	tableProps = {
-		...tableProps,
-		onChange: (pagination, filters) => {
-			setFilterStatus(filters.status)
-			submit()
-		}
-	}
 
 	const columns = [
 		{
@@ -37,16 +32,7 @@ export default () => {
 		},
 		{
 			title: 'Trạng thái',
-			dataIndex: 'status',
-			filters: [
-				{ text: 'Chờ Duyệt', value: 'WAITING' },
-				{ text: 'Hoàn Tiền', value: 'REFUND' },
-				{ text: 'Chấp nhận', value: 'CONFIRM' },
-				{ text: 'Đang Giao', value: 'SHIPPING' },
-				{ text: 'Đã Hủy', value: 'CANCELED' },
-				{ text: 'Hoàn Thành', value: 'DONE' }
-			],
-			filterMultiple: false
+			dataIndex: 'status'
 		},
 		{
 			title: 'Hành động',
@@ -71,5 +57,21 @@ export default () => {
 			}
 		}
 	]
-	return <Table columns={columns} rowKey="id" {...tableProps} />
+	return (
+		<>
+			<Form form={form} className="flex w-1/2">
+				<Form.Item name="filterStatus" label="Trạng thái: " className="mr-2 w-1/3">
+					<Select placeholder="Chọn trạng thái" onChange={submit}>
+						<Select.Option value="WAITING">WAITING</Select.Option>
+						<Select.Option value="CONFIRM">CONFIRM</Select.Option>
+						<Select.Option value="SHIPPING">SHIPPING</Select.Option>
+						<Select.Option value="CANCELED">CANCELED</Select.Option>
+						<Select.Option value="DONE">DONE</Select.Option>
+						<Select.Option value="REFUND">REFUND</Select.Option>
+					</Select>
+				</Form.Item>
+			</Form>
+			<Table columns={columns} rowKey="id" {...tableProps} />
+		</>
+	)
 }

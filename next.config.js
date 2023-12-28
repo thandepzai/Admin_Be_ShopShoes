@@ -2,7 +2,7 @@ const nextConfig = {
 	async headers() {
 		return [
 			{
-				source: '/api/v1/public/:path*',
+				source: '/api/public/:path*',
 				headers: [
 					{ key: 'Access-Control-Allow-Credentials', value: 'true' },
 					{ key: 'Access-Control-Allow-Origin', value: '*' },
@@ -20,7 +20,7 @@ const nextConfig = {
 	},
 	serverRuntimeConfig: {
 		images: {
-			domains: ['ohaomxltnhpdriahjpvz.supabase.co'],
+			domains: ['*'],
 			formats: ['image/webp']
 		}
 	},
@@ -29,7 +29,7 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
-				hostname: 'ohaomxltnhpdriahjpvz.supabase.co',
+				hostname: '*',
 				port: '',
 				pathname: '/storage/v1/object/public/itx_storage/**'
 			}

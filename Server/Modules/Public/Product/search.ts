@@ -10,7 +10,8 @@ export default async function searchProductPublic(req: NextApiRequest) {
 				name: {
 					contains: lowercaseName,
 					mode: 'insensitive'
-				}
+				},
+				deleted: 0
 			},
 			include: {
 				sizeProduct: true

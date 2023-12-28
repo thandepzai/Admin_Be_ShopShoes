@@ -1,9 +1,9 @@
 export const ROLE_API = {
-	endpoint: '/api/v1/admin/role'
+	endpoint: '/api/admin/role'
 }
 export const ROLE_USERS_API = {
-	endpoint: '/api/v1/admin/role-users'
+	endpoint: '/api/admin/role-users'
 }
 export const USERS_API = {
-	endpoint: '/api/v1/admin/role-users/users',
+	endpoint: '/api/admin/role-users/users'
 }

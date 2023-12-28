@@ -1,10 +1,6 @@
 import { NextApiRequest } from 'next'
 import { SizeProduct } from '@prisma/client'
-import { STATUS_CODE } from '@/const/app-const'
-
 import { prisma } from '@/services/prisma'
-import { removeMark } from '@/ultis/dataConvert'
-
 interface BodyProps {
 	name: string
 	productBrandId: string

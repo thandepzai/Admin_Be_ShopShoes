@@ -5,6 +5,7 @@ import { removeSpecial } from '@/ultis/dataConvert'
 import ImgCrop from 'antd-img-crop'
 
 import { supabase } from '@/services/supabase'
+import { SUPABASE_CONFIG } from '@/const/app-const'
 
 interface Props {
 	form: FormInstance<any>
@@ -21,9 +22,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	const [deleting, setDeleting] = useState(false)
 	const [fileList, setFileList] = useState<string[]>(() => {
 		const init: string[] = initValue?.map(item => {
-			const splitStr = item.split(
-				'https://ikunmdgrxuoyltqjiolb.supabase.co/storage/v1/object/public/file/public/'
-			)
+			const splitStr = item.split(SUPABASE_CONFIG.IMAGE)
 			return splitStr[1]
 		})
 		return init
@@ -32,9 +31,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	useEffect(() => {
 		let arr: undefined | string[] = undefined
 		if (fileList.length > 0) {
-			arr = fileList.map(
-				item => `https://ikunmdgrxuoyltqjiolb.supabase.co/storage/v1/object/public/file/public/${item}`
-			)
+			arr = fileList.map(item => `${SUPABASE_CONFIG.IMAGE}${item}`)
 		}
 		form.setFieldValue(formName, arr)
 	}, [fileList, form, formName])

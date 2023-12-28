@@ -29,7 +29,8 @@ export default async function searchProductListPublic(req: NextApiRequest) {
 				where: {
 					ProductBrand: {
 						name: { contains: lowercaseBrand, mode: 'insensitive' }
-					}
+					},
+					deleted: 0
 				},
 				include: {
 					sizeProduct: true
@@ -68,14 +69,15 @@ export default async function searchProductListPublic(req: NextApiRequest) {
 		}
 	}
 
-	const lowercaseName = parts[2].toString().toLowerCase()
+	const lowercaseName = decodeURIComponent(parts[2]).toLowerCase()
 	try {
 		const filteredProducts = await prisma.product.findMany({
 			where: {
 				name: {
 					contains: lowercaseName,
 					mode: 'insensitive'
-				}
+				},
+				deleted: 0
 			},
 			include: {
 				sizeProduct: true

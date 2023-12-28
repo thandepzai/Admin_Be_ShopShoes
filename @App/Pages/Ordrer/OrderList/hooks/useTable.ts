@@ -11,16 +11,14 @@ interface Result {
 	list: any[]
 }
 export const useTable = () => {
-	const [filterStatus, setFilterStatus] = useState()
-
 	const getTableData = async ({ current, pageSize }: PagingParam, formData: Object): Promise<Result> => {
 		const data = await orderServices.search({
-			params: { page: current, pageSize: pageSize, filterStatus, ...formData }
+			params: { page: current, pageSize: pageSize, ...formData }
 		})
 		return {
 			list: data?.data?.dataTable ?? [],
 			total: data?.data?.totalCount
 		}
 	}
-	return { getTableData, setFilterStatus }
+	return { getTableData }
 }

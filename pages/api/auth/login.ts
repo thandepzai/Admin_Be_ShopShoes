@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE, TOKEN_KEY } from '@/const/app-const'
 import bcrypt from 'bcrypt'
-import { ResponseProps } from '@/network/services/api-handler'
 import { prisma } from '@/services/prisma'
 import { tokenUtils } from '@/ultis/BE/token'
 

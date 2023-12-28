@@ -8,18 +8,19 @@ interface BodyProps {
 }
 export default async function confirmOrder(req: NextApiRequest) {
 	const { orderId, status } = JSON.parse(req.body) as BodyProps
+	console.log('🚀 ~ file: confirm.ts:11 ~ confirmOrder ~ orderId:', orderId)
 	try {
-    const existingOrder = await prisma.order.findUnique({
-      where: { id: Number(orderId) },
-    });
+		const existingOrder = await prisma.order.findUnique({
+			where: { id: Number(orderId) }
+		})
 
-    if (existingOrder?.status === "CONFIRM") {
-      return {
-        ok: false,
-        data: null,
-        msg: `Đơn hàng  ${orderId} đã được xác nhận rồi`,
-      };
-    }
+		if (existingOrder?.status === 'CONFIRM') {
+			return {
+				ok: false,
+				data: null,
+				msg: `Đơn hàng  ${orderId} đã được xác nhận rồi`
+			}
+		}
 
 		const updateOrder = await prisma.order.update({
 			where: { id: Number(orderId) },
@@ -32,7 +33,7 @@ export default async function confirmOrder(req: NextApiRequest) {
 			msg: `Xác nhận đơn hàng thành công`
 		}
 	} catch (error) {
-		console.log("🚀 ~ file: confirm.ts:50 ~ confirmOrder ~ error:", error)
+		console.log('🚀 ~ file: confirm.ts:50 ~ confirmOrder ~ error:', error)
 		return null
 	}
 }

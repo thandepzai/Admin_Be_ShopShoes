@@ -8,7 +8,7 @@ export interface DecodeTokenProps {
 }
 
 export const config = {
-	matcher: ['/api/v1/auth/me', '/api/v1/product/:path*', '/api/v1/order/:path*', '/api/v1/admin/:path*']
+	matcher: ['/api/auth/me', '/api/product/:path*', '/api/order/:path*', '/api/admin/:path*']
 }
 
 export const skipPath = ['/v1/auth/logout', '/v1/auth/login']

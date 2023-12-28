@@ -28,6 +28,12 @@ interface BodyProps {
 
 export default async function createOrder(req: NextApiRequest) {
 	const { items, customerInfo, paymentInfo } = JSON.parse(req.body) as BodyProps
+	console.log(
+		'🚀 ~ file: create.ts:31 ~ createOrder ~ items, customerInfo, paymentInfo:',
+		items,
+		customerInfo,
+		paymentInfo
+	)
 
 	try {
 		const checkStocking = await Promise.all(
@@ -54,10 +60,13 @@ export default async function createOrder(req: NextApiRequest) {
 		}
 
 		if (isAllStocking) {
+			const codeOrder =
+				paymentInfo.method === 'online' && paymentInfo.note ? paymentInfo.note.toString() : newCode
+
 			const order = await prisma.order.create({
 				data: {
 					status: 'WAITING',
-					code: newCode,
+					code: codeOrder,
 					orderProduct: {
 						create: items.map(item => item)
 					},
@@ -69,6 +78,7 @@ export default async function createOrder(req: NextApiRequest) {
 					}
 				}
 			})
+
 			const codeProduct: (string | undefined)[] = []
 			await Promise.all(
 				items.map(async item => {
@@ -108,6 +118,27 @@ export default async function createOrder(req: NextApiRequest) {
 				ok: true,
 				data: dataResponse,
 				msg: 'Tạo Đơn hàng thành công'
+			}
+		} else if (paymentInfo.method === 'online') {
+			const order = await prisma.order.create({
+				data: {
+					status: 'REFUND',
+					code: paymentInfo.note?.toString() ?? '',
+					orderProduct: {
+						create: items.map(item => ({ sizeProductId: item.sizeProductId, quantity: 0 }))
+					},
+					orderCustomerInfo: {
+						create: customerInfo
+					},
+					orderPayment: {
+						create: paymentInfo
+					}
+				}
+			})
+			return {
+				ok: false,
+				data: order,
+				msg: `Sản phẩm không đủ số lượng vui lòng kiểm tra lại`
 			}
 		}
 

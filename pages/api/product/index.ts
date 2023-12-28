@@ -1,11 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE } from '@/const/app-const'
-import findClassification from '@/Server/Modules/Product/classification/find'
+import createProduct from '@/Server/Modules/Product/create'
+import editProduct from '@/Server/Modules/Product/edit'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	let response: any
-	if (req.method === METHOD.GET) {
-		response = await findClassification(req)
+	if (req.method === METHOD.POST) {
+		response = await createProduct(req)
+	}
+
+	if (req.method === METHOD.PUT) {
+		response = await editProduct(req)
 	}
 
 	if (response) {

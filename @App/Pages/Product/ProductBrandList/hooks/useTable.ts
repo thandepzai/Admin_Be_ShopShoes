@@ -1,18 +1,7 @@
-import { useRequest } from 'ahooks'
 import { productBrandServices } from '../../services/productServices'
-import { useEffect } from 'react'
 interface PagingParam {
 	current: number
 	pageSize: number
-}
-
-interface Item {
-	name: {
-		last: string
-	}
-	email: string
-	phone: string
-	gender: 'male' | 'female'
 }
 
 interface Result {
