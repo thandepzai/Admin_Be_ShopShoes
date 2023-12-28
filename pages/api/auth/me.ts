@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE } from '@/const/app-const'
-import { ResponseProps } from '@/network/services/api-handler'
 import { prisma } from '@/services/prisma'
 import { tokenUtils } from '@/ultis/BE/token'
 
