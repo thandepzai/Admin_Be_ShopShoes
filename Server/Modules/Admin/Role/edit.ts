@@ -6,17 +6,18 @@ interface BodyProps {
 	label: string
 	alias: string
 	isActive: number
+	status: boolean
 }
 export default async function editProduct(req: NextApiRequest) {
 	console.log(req.body)
-	const { id, label, alias, isActive } = JSON.parse(req.body) as BodyProps
+	const { id, label, alias, isActive, status } = JSON.parse(req.body) as BodyProps
 	try {
 		await prisma.role.update({
 			where: { id: id },
 			data: {
 				label,
 				alias,
-				isActive
+				isActive: status ? 1 : 0
 			}
 		})
 		return {
