@@ -43,6 +43,8 @@ CREATE TABLE "Product" (
     "code" TEXT NOT NULL,
     "seo" TEXT NOT NULL,
     "keywords" TEXT NOT NULL,
+    "view" INTEGER NOT NULL DEFAULT 0,
+    "minPrice" DOUBLE PRECISION NOT NULL,
     "productBrandId" INTEGER NOT NULL,
     "deleted" INTEGER NOT NULL DEFAULT 0,
 
@@ -77,6 +79,8 @@ CREATE TABLE "Order" (
     "note" TEXT NOT NULL DEFAULT '',
     "status" TEXT NOT NULL,
     "code" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -111,7 +115,7 @@ CREATE TABLE "OrderPayment" (
     "quantity" INTEGER NOT NULL,
     "method" TEXT NOT NULL,
     "note" TEXT,
-    "paidAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "orderId" INTEGER NOT NULL,
 
     CONSTRAINT "OrderPayment_pkey" PRIMARY KEY ("id")
@@ -133,7 +137,6 @@ CREATE TABLE "OrderShipping" (
 CREATE TABLE "SessionList" (
     "id" SERIAL NOT NULL,
     "listCodeProduct" JSONB NOT NULL,
-    "status" BOOLEAN NOT NULL,
 
     CONSTRAINT "SessionList_pkey" PRIMARY KEY ("id")
 );
@@ -164,6 +167,9 @@ CREATE UNIQUE INDEX "UserRole_userId_roleId_key" ON "UserRole"("userId", "roleId
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Product_id_key" ON "Product"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Product_code_key" ON "Product"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "SizeProduct_id_key" ON "SizeProduct"("id");
